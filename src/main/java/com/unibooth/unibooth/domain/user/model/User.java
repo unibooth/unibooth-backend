@@ -1,6 +1,5 @@
 package com.unibooth.unibooth.domain.user.model;
 
-
 import com.unibooth.unibooth.domain.user.dto.UserCreateDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,17 +19,18 @@ import java.util.List;
 @Getter
 public class User implements UserDetails {
 
-    public User(String email, String name) {
+    public User(String email, String name, String university) {
         this.email = email;
         this.name = name;
         this.point = 0L;
+        this.university = university;
         this.isUniversityCertified = false;
         this.roles = Collections.singletonList("ROLE_USER");
         // 대학 객체
     }
 
     public static User of(UserCreateDto userCreateDto) {
-        return new User(userCreateDto.getEmail(), userCreateDto.getName());
+        return new User(userCreateDto.getEmail(), userCreateDto.getName(),userCreateDto.getUniversity());
     }
 
     @Id
@@ -47,7 +47,7 @@ public class User implements UserDetails {
     private Long point;
 
     // 추후 객체 참조로 변경
-    private Long universityId;
+    private String university;
 
     private boolean isUniversityCertified;
 

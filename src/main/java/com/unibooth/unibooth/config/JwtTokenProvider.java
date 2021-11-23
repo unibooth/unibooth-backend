@@ -21,7 +21,7 @@ public class JwtTokenProvider {
     // 환경 변수로 이동
     private String secretKey = "unibooth";
 
-    private long tokenValidTime = 60 * 60 * 1000L;
+    private long tokenValidTime = 600 * 600 * 1000L;
 
     private final UserDetailsService userDetailsService;
 
