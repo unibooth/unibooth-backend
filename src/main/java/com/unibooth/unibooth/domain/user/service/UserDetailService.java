@@ -3,6 +3,9 @@ package com.unibooth.unibooth.domain.user.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.unibooth.unibooth.config.JwtTokenProvider;
+import com.unibooth.unibooth.domain.university.model.University;
+import com.unibooth.unibooth.domain.university.repository.UniversityRepository;
+import com.unibooth.unibooth.domain.university.service.UniversityService;
 import com.unibooth.unibooth.domain.user.dto.KakaoAPI.KakaoProfileDto;
 import com.unibooth.unibooth.domain.user.dto.KakaoAPI.KakaoTokenDto;
 import com.unibooth.unibooth.domain.user.dto.OauthUserCreateDto;
@@ -30,7 +33,7 @@ import java.util.Optional;
 public class UserDetailService implements UserDetailsService {
     private final UserRepository userRepository;
     private final Environment environment;
-
+    private final UniversityService universityService;
 
 
     @Override
@@ -39,13 +42,14 @@ public class UserDetailService implements UserDetailsService {
     }
 
     public String userJoin(UserCreateDto userCreateDto, JwtTokenProvider jwtTokenProvider) {
-        User user = User.of(userCreateDto);
+        University university = universityService.saveAndGetUniversity(userCreateDto.getUniversity());
+        User user = User.of(userCreateDto, university);
+
         userRepository.save(user);
         return jwtTokenProvider.createToken(user.getUsername(), user.getRoles());
     }
 
     public String oauthGateway(UserCreateDto userCreateDto, JwtTokenProvider jwtTokenProvider) {
-
         Optional<User> user = userRepository.findByEmail(userCreateDto.getEmail());
 
         if(!user.isPresent()) {

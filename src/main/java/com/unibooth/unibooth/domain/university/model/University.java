@@ -14,6 +14,13 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @NoArgsConstructor
 public class University {
+    public University(String name) {
+        this.name = name;
+    }
+
+    public static University of(String name) {
+        return new University(name);
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
