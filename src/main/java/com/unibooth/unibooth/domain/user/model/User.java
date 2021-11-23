@@ -41,7 +41,6 @@ public class User implements UserDetails {
     @Column(length = 100, nullable = false, unique = true)
     private String email;
     private String name;
-    //private String password;
 
     private String phoneNumber;
 
@@ -51,6 +50,13 @@ public class User implements UserDetails {
     private University university;
 
     private boolean isUniversityCertified;
+
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    private Entertainer entertainerProfile;
+
+    private boolean isEntertainer;
+
+
 
     @ElementCollection(fetch = FetchType.EAGER)
     private List<String> roles = new ArrayList<>();
