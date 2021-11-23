@@ -1,0 +1,46 @@
+version: "3.7"
+
+services:
+  database:
+    image: mysql:5.7
+    command: [ "--lower_case_table_names=1",
+               "--ignore-db-dir=lost+found",
+               "--character-set-server=utf8",
+               "--collation-server=utf8_general_ci" ]
+    environment:
+      MYSQL_USER: unibooth
+      MYSQL_DATABASE: unibooth_db
+      MYSQL_ROOT_HOST: "%"
+      MYSQL_PASSWORD: unibooth
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    volumes:
+      - "./database/unibooth_db/:/application"
+    ports:
+      - "3306:3306"
+    restart: always
+    container_name: unibooth-mysql
+    networks:
+      - backend-network
+
+  spring-boot:
+
+    image: unibooth:0.0.1-SNAPSHOT
+    ports:
+      - "8080:8080"
+    container_name: unibooth-backend
+    restart: always
+    depends_on:
+      - database
+    volumes:
+      - .:/unibooth/tmp:rw
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://database:3306/unibooth_db?useSSL=false
+      SPRING_DATASOURCE_USERNAME: unibooth
+      SPRING_DATASOURCE_PASSWORD: unibooth
+    networks:
+      - backend-network
+      - frontend-network
+
+networks:
+  backend-network:
+  frontend-network:
