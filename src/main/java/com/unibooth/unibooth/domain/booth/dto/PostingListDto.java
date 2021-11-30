@@ -10,9 +10,10 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @Getter
+// model attribute로 dto 변환시 모든 내용이 post될 필요는 없음.
 public class PostingListDto {
 
     private String postingTitle;
     private MultipartFile coverPhoto;
-    private List<PostingDto> postingDtoList;
+    private List<ContentDto> contentDtoList;
 }

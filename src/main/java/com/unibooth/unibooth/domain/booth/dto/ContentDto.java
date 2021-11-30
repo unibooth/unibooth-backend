@@ -5,11 +5,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @Getter
-public class PostingDto {
+public class ContentDto {
     private MultipartFile photo;
     private String explain;
-    private String tag;
+
+    // for tag
+    private List<TagDto> tagDtoList;
 }
