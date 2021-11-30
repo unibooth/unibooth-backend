@@ -29,5 +29,4 @@ public class Booth {
     private University university;
 
 
-
 }
