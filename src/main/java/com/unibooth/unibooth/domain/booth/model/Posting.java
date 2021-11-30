@@ -20,5 +20,6 @@ public class Posting {
     @ManyToOne(fetch = FetchType.EAGER)
     private Entertainer entertainer;
 
+    private String category;
 
 }
