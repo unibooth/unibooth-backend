@@ -1,8 +1,8 @@
 package com.unibooth.unibooth.domain.booth.service;
 
 
-import com.unibooth.unibooth.domain.booth.dto.ContentDto;
-import com.unibooth.unibooth.domain.booth.dto.PostingListDto;
+import com.unibooth.unibooth.domain.booth.dto.request.ContentDto;
+import com.unibooth.unibooth.domain.booth.dto.request.PostingListDto;
 import com.unibooth.unibooth.domain.booth.model.Contents;
 import com.unibooth.unibooth.domain.booth.model.FileStream;
 import com.unibooth.unibooth.domain.booth.model.Posting;
@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -65,4 +64,8 @@ public class PostingService {
         postingRepository.save(posting);
 
     }
+
+    public
+
+    public
 }

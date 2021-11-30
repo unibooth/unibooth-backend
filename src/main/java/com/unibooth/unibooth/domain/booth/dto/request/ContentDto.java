@@ -1,4 +1,4 @@
-package com.unibooth.unibooth.domain.booth.dto;
+package com.unibooth.unibooth.domain.booth.dto.request;
 
 import lombok.Data;
 import lombok.Getter;

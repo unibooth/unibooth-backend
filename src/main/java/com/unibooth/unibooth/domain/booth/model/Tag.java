@@ -1,6 +1,6 @@
 package com.unibooth.unibooth.domain.booth.model;
 
-import com.unibooth.unibooth.domain.booth.dto.TagDto;
+import com.unibooth.unibooth.domain.booth.dto.request.TagDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

@@ -1,13 +1,10 @@
 package com.unibooth.unibooth.domain.booth.model;
 
-import com.unibooth.unibooth.domain.booth.dto.ContentDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Value;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
-import java.util.List;
 
 
 @Entity
