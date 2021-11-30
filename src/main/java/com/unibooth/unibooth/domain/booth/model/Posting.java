@@ -4,6 +4,7 @@ import com.unibooth.unibooth.domain.user.model.Entertainer;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+
 import javax.persistence.*;
 
 @Entity
@@ -21,5 +22,9 @@ public class Posting {
     private Entertainer entertainer;
 
     private String category;
+
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private FileStream coverPhoto;
+    private String contentTitle;
 
 }

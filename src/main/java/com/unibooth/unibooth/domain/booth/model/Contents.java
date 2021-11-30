@@ -15,10 +15,7 @@ public class Contents {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Booth booth;
-
-    private int price;
+    private String postingTitle;
 
     @Column(length = 3000)
     private String explain;

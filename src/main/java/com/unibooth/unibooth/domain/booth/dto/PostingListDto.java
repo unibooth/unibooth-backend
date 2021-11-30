@@ -3,6 +3,7 @@ package com.unibooth.unibooth.domain.booth.dto;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -11,5 +12,7 @@ import java.util.List;
 @Getter
 public class PostingListDto {
 
-    List<PostingDto> postingDtoList;
+    private String postingTitle;
+    private MultipartFile coverPhoto;
+    private List<PostingDto> postingDtoList;
 }
