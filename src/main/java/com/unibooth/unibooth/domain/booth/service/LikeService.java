@@ -14,15 +14,18 @@ public class LikeService {
     private final PostingRepository postingRepository;
     private final UserRepository userRepository;
 
+
     public void likeAppendOrDelete(Long postingId, Long userId) {
         Posting posting = postingRepository.findByIdElseThrow(postingId);
         User user  = userRepository.findByIdElseThrow(userId);
 
         if(posting.getLikeUsers().contains(user)) {
             posting.getLikeUsers().remove(user);
+
         }else {
             posting.getLikeUsers().add(user);
         }
 
+        postingRepository.save(posting);
     }
 }
