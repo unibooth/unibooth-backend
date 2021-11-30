@@ -11,8 +11,16 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     default User findByEmailElseThrow(String email) {
        return this.findByEmail(email).orElseThrow(
-               () -> new NullPointerException("사용자 이메일을 찾을 수 없어요.")
+               () -> new NullPointerException("사용자를 찾을 수 없어요.")
        );
    }
+
+    Optional<User> findById(Long id);
+
+    default User findByIdElseThrow(Long id) {
+        return this.findById(id).orElseThrow(
+                () -> new NullPointerException("사용자를 찾을 수 없어요.")
+        );
+    }
 
 }

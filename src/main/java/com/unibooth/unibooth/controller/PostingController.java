@@ -3,8 +3,10 @@ package com.unibooth.unibooth.controller;
 import com.unibooth.unibooth.domain.booth.dto.ContentDto;
 import com.unibooth.unibooth.domain.booth.dto.PostingListDto;
 import com.unibooth.unibooth.domain.booth.dto.TagDto;
+import com.unibooth.unibooth.domain.booth.service.LikeService;
 import com.unibooth.unibooth.domain.booth.service.PostingService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
@@ -17,21 +19,24 @@ import java.util.List;
 public class PostingController {
 
     private final PostingService postingService;
+    private final LikeService likeService;
 
     @PostMapping("/{boothId}")
+    @ResponseStatus(HttpStatus.OK)
     public String boothPosting(@PathVariable Long boothId,
                                @ModelAttribute PostingListDto postingDto
                                ) throws IOException, NoSuchAlgorithmException {
         System.out.println("postingDto.getPostingTitle() = " + postingDto.getPostingTitle());
-
         postingService.boothPosting(postingDto);
         return "success";
     }
 
-//    @PostMapping("/like/{postingId}")
-//    public String likeAppend(@PathVariable Long postingId) {
-//
-//    }
+    @PostMapping("/like/{postingId}/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    public String likeAppend(@PathVariable Long postingId, @PathVariable Long userId) {
+        likeService.likeAppendOrDelete(postingId, userId);
+        return "success";
+    }
 
 
 

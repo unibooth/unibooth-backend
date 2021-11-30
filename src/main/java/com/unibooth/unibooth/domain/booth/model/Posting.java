@@ -1,12 +1,15 @@
 package com.unibooth.unibooth.domain.booth.model;
 
 import com.unibooth.unibooth.domain.user.model.Entertainer;
+import com.unibooth.unibooth.domain.user.model.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -30,6 +33,15 @@ public class Posting {
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private FileStream coverPhoto;
     private String postingTitle;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(
+            name="heart",
+            joinColumns = @JoinColumn(name="posting_id"),
+            inverseJoinColumns = @JoinColumn(name="user_id")
+    )
+    private Set<User> likeUsers = new HashSet<>();
+
 
     public Posting(String postingTitle, FileStream coverPhoto, List<Contents> contentsList) {
         this.postingTitle = postingTitle;

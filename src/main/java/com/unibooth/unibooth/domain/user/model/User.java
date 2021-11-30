@@ -1,5 +1,6 @@
 package com.unibooth.unibooth.domain.user.model;
 
+import com.unibooth.unibooth.domain.booth.model.Posting;
 import com.unibooth.unibooth.domain.university.model.University;
 import com.unibooth.unibooth.domain.user.dto.UserCreateDto;
 import lombok.AllArgsConstructor;
@@ -9,10 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -56,6 +54,9 @@ public class User implements UserDetails {
 
     private boolean isEntertainer;
 
+    @Getter
+    @ManyToMany(mappedBy = "likeUsers")
+    private Set<Posting> likePostings = new HashSet<>();
 
 
     @ElementCollection(fetch = FetchType.EAGER)
