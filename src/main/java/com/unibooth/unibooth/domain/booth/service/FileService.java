@@ -2,6 +2,7 @@ package com.unibooth.unibooth.domain.booth.service;
 
 
 import com.unibooth.unibooth.domain.booth.model.FileStream;
+import com.unibooth.unibooth.domain.booth.model.Tag;
 import com.unibooth.unibooth.domain.booth.repository.FileStreamRepository;
 import com.unibooth.unibooth.domain.booth.util.MD5Generator;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,7 @@ import java.io.File;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Service
@@ -32,11 +34,9 @@ public class FileService {
         if(!dir.exists())
             dir.mkdirs();
 
-        FileStream fileStream = FileStream.builder()
-                .fileName(fileName)
-                .filePath(filePath)
-                .originalFileName(multipartFile.getOriginalFilename())
-                .build();
+        FileStream fileStream = FileStream.of(
+                fileName, filePath, multipartFile.getOriginalFilename()
+        );
 
         filePath =  filePath + fileName;
         File f = new File(filePath);

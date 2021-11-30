@@ -22,8 +22,7 @@ public class Booth {
     @OneToOne(fetch = FetchType.EAGER)
     private Entertainer entertainer;
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Contents> contentsList;
+
 
     @ManyToOne(fetch = FetchType.EAGER)
     private University university;

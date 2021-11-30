@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -23,8 +24,25 @@ public class Posting {
 
     private String category;
 
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Contents> contentsList;
+
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private FileStream coverPhoto;
-    private String contentTitle;
+    private String postingTitle;
+
+    public Posting(String postingTitle, FileStream coverPhoto, List<Contents> contentsList) {
+        this.postingTitle = postingTitle;
+        this.coverPhoto = coverPhoto;
+        this.contentsList = contentsList;
+    }
+
+    public static Posting of(
+            String postingTitle,
+            FileStream coverPhoto,
+            List<Contents> contentsList
+    ) {
+        return new Posting(postingTitle, coverPhoto, contentsList);
+    }
 
 }

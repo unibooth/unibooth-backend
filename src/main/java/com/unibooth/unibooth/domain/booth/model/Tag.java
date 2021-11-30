@@ -1,5 +1,6 @@
 package com.unibooth.unibooth.domain.booth.model;
 
+import com.unibooth.unibooth.domain.booth.dto.TagDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -16,8 +17,15 @@ public class Tag {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int order;
     private String item;
     private int price;
 
+    public Tag(String item, int price) {
+        this.item = item;
+        this.price = price;
+    }
+
+    public static Tag of(TagDto tagDto) {
+        return new Tag(tagDto.getItem(), tagDto.getPrice());
+    }
 }

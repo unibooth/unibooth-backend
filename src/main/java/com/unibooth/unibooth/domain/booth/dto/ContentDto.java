@@ -12,7 +12,8 @@ import java.util.List;
 @Getter
 public class ContentDto {
     private MultipartFile photo;
-    private String explain;
+    private String contents;
+    private String contentTitle;
 
     // for tag
     private List<TagDto> tagDtoList;
