@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -12,9 +13,9 @@ import java.util.List;
 @Getter
 public class ContentDto {
     private MultipartFile photo;
-    private String contents;
-    private String contentTitle;
+    private String contents = "";
+    private String contentTitle = "";
 
     // for tag
-    private List<TagDto> tagDtoList;
+    private List<TagDto> tagDtoList = new ArrayList<>();
 }

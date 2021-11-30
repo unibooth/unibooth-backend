@@ -1,4 +1,4 @@
-package com.unibooth.unibooth.domain.booth.controller;
+package com.unibooth.unibooth.controller;
 
 import com.unibooth.unibooth.domain.booth.dto.ContentDto;
 import com.unibooth.unibooth.domain.booth.dto.PostingListDto;
@@ -27,6 +27,13 @@ public class PostingController {
         postingService.boothPosting(postingDto);
         return "success";
     }
+
+//    @PostMapping("/like/{postingId}")
+//    public String likeAppend(@PathVariable Long postingId) {
+//
+//    }
+
+
 
 
 }

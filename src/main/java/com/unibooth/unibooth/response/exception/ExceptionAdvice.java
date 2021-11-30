@@ -17,7 +17,7 @@ public class ExceptionAdvice {
     @ExceptionHandler(NullPointerException.class)
     public ResponseEntity<HttpResponseDto> handler(NullPointerException e) {
         HttpResponseDto httpResponseDto =
-                new HttpResponseDto(StatusEnum.UNAUTHORIZED, e.getMessage());
+                new HttpResponseDto(StatusEnum.PARAMETER_LACKED, e.getMessage());
         return new ResponseEntity<>(httpResponseDto, getHttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 
