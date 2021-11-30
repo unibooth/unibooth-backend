@@ -11,4 +11,8 @@ import lombok.NoArgsConstructor;
 public class TagDto {
     private String item;
     private int price = 0;
+
+    //필수
+    private int positionX;
+    private int positionY;
 }

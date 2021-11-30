@@ -1,6 +1,7 @@
 package com.unibooth.unibooth.controller;
 
 import com.unibooth.unibooth.domain.booth.dto.request.PostingListDto;
+import com.unibooth.unibooth.domain.booth.dto.response.PostingResDto;
 import com.unibooth.unibooth.domain.booth.service.LikeService;
 import com.unibooth.unibooth.domain.booth.service.PostingService;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -37,8 +39,8 @@ public class PostingController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public String getAllBoothPosting() {
-
+    public List<PostingResDto> getAllBoothPosting() throws IOException {
+        return postingService.getAllPosting();
     }
 
 

@@ -24,6 +24,8 @@ public class Tag {
         this.item = item;
         this.price = price;
     }
+    private int positionX;
+    private int positionY;
 
     public static Tag of(TagDto tagDto) {
         return new Tag(tagDto.getItem(), tagDto.getPrice());

@@ -3,6 +3,10 @@ package com.unibooth.unibooth.domain.booth.service;
 
 import com.unibooth.unibooth.domain.booth.dto.request.ContentDto;
 import com.unibooth.unibooth.domain.booth.dto.request.PostingListDto;
+import com.unibooth.unibooth.domain.booth.dto.response.ContentResDto;
+import com.unibooth.unibooth.domain.booth.dto.response.PhotoFileDto;
+import com.unibooth.unibooth.domain.booth.dto.response.PostingResDto;
+import com.unibooth.unibooth.domain.booth.dto.response.TagResDto;
 import com.unibooth.unibooth.domain.booth.model.Contents;
 import com.unibooth.unibooth.domain.booth.model.FileStream;
 import com.unibooth.unibooth.domain.booth.model.Posting;
@@ -11,10 +15,15 @@ import com.unibooth.unibooth.domain.booth.repository.ContentsRepository;
 import com.unibooth.unibooth.domain.booth.repository.PostingRepository;
 import com.unibooth.unibooth.domain.booth.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +74,50 @@ public class PostingService {
 
     }
 
-    public
+    public List<PostingResDto> getAllPosting() throws IOException {
+        List<Posting> postingList = postingRepository.findAll();
+        List<PostingResDto> postingResDtos = new ArrayList<>();
+        for(int i=0; i<postingList.size(); i++) {
+            Posting posting = postingList.get(i);
+            List<ContentResDto> contentResDtos = new ArrayList<>();
+            for(int j=0; j<posting.getContentsList().size(); j++) {
+                Contents contents = posting.getContentsList().get(j);
 
-    public
+                List<TagResDto> tagResDtos = new ArrayList<>();
+                for(int k=0; k<contents.getFileStream().getTagList().size(); k++) {
+                    TagResDto tagResDto = TagResDto.from(contents.getFileStream().getTagList().get(k));
+                    tagResDtos.add(tagResDto);
+                }
+                File file = new File(contents.getFileStream().getFilePath() + contents.getFileStream().getFileName());
+                Path path = Paths.get(file.getAbsolutePath());
+                ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(path));
+                PhotoFileDto photoFileDto = PhotoFileDto.from(
+                        resource.getByteArray(),
+                        tagResDtos
+                );
+                ContentResDto contentResDto = ContentResDto.from(
+                        contents.getId(),
+                        photoFileDto,
+                        contents.getContents(),
+                        contents.getContentTitle()
+                );
+
+                contentResDtos.add(contentResDto);
+            }
+            File file = new File(posting.getCoverPhoto().getFilePath() + posting.getCoverPhoto().getFileName());
+            Path path = Paths.get(file.getAbsolutePath());
+            ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(path));
+
+            PostingResDto postingResDto =
+                    PostingResDto.from(
+                            posting.getPostingTitle(),
+                            resource.getByteArray(),
+                            contentResDtos
+                    );
+            postingResDtos.add(postingResDto);
+        }
+
+        return postingResDtos;
+    }
+
 }
