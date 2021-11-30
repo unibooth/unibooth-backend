@@ -7,7 +7,7 @@ import com.unibooth.unibooth.domain.booth.dto.response.ContentResDto;
 import com.unibooth.unibooth.domain.booth.dto.response.PhotoFileDto;
 import com.unibooth.unibooth.domain.booth.dto.response.PostingResDto;
 import com.unibooth.unibooth.domain.booth.dto.response.TagResDto;
-import com.unibooth.unibooth.domain.booth.model.Contents;
+import com.unibooth.unibooth.domain.booth.model.Content;
 import com.unibooth.unibooth.domain.booth.model.FileStream;
 import com.unibooth.unibooth.domain.booth.model.Posting;
 import com.unibooth.unibooth.domain.booth.model.Tag;
@@ -40,7 +40,7 @@ public class PostingService {
     @Transactional(rollbackFor = {Exception.class})
     public void boothPosting(PostingListDto postingListDto) throws IOException, NoSuchAlgorithmException {
 
-        List<Contents> contentsList = new ArrayList<>();
+        List<Content> contentsList = new ArrayList<>();
         for(int i=0; i<postingListDto.getContentDtoList().size(); i++) {
             ContentDto contentDto = postingListDto.getContentDtoList().get(i);
             List<Tag> tagList = new ArrayList<>();
@@ -53,7 +53,7 @@ public class PostingService {
 
             FileStream fileStream = fileService.fileUpload(contentDto.getPhoto());
             fileStream.setTagList(tagList);
-            Contents contents = Contents.of(
+            Content contents = Content.of(
                     contentDto.getContentTitle(),
                     contentDto.getContents(),
                     fileStream
@@ -81,7 +81,7 @@ public class PostingService {
             Posting posting = postingList.get(i);
             List<ContentResDto> contentResDtos = new ArrayList<>();
             for(int j=0; j<posting.getContentsList().size(); j++) {
-                Contents contents = posting.getContentsList().get(j);
+                Content contents = posting.getContentsList().get(j);
 
                 List<TagResDto> tagResDtos = new ArrayList<>();
                 for(int k=0; k<contents.getFileStream().getTagList().size(); k++) {

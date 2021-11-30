@@ -10,37 +10,34 @@ import javax.persistence.*;
 @Entity
 @NoArgsConstructor
 @Getter
-public class Contents {
+public class Content {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ColumnDefault("")
     private String contentTitle;
 
     @Column(length = 3000)
-    @ColumnDefault("")
     private String contents;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private FileStream fileStream;
 
 
-    public Contents(String contentTitle,
-                    String contents,
-                    FileStream fileStream) {
+    public Content(String contentTitle,
+                   String contents,
+                   FileStream fileStream) {
 
         this.contentTitle = contentTitle;
         this.contents = contents;
         this.fileStream = fileStream;
-
     }
 
-    public static Contents of(
+    public static Content of(
             String contentTitle,
             String contents,
             FileStream fileStream
             ) {
-        return new Contents(contentTitle, contents, fileStream);
+        return new Content(contentTitle, contents, fileStream);
     }
 
 }

@@ -37,7 +37,7 @@ public class PostingController {
         return "success";
     }
 
-    @GetMapping
+    @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     public List<PostingResDto> getAllBoothPosting() throws IOException {
         return postingService.getAllPosting();

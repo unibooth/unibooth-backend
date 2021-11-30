@@ -20,14 +20,16 @@ public class Tag {
     private String item;
     private int price;
 
-    public Tag(String item, int price) {
+    public Tag(String item, int price, int positionX, int positionY) {
         this.item = item;
         this.price = price;
+        this.positionX = positionX;
+        this.positionY = positionY;
     }
     private int positionX;
     private int positionY;
 
     public static Tag of(TagDto tagDto) {
-        return new Tag(tagDto.getItem(), tagDto.getPrice());
+        return new Tag(tagDto.getItem(), tagDto.getPrice(), tagDto.getPositionX(), tagDto.getPositionY());
     }
 }

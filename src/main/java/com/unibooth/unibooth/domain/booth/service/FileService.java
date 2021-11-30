@@ -35,7 +35,7 @@ public class FileService {
             dir.mkdirs();
 
         FileStream fileStream = FileStream.of(
-                fileName, filePath, multipartFile.getOriginalFilename()
+                multipartFile.getOriginalFilename(), fileName, filePath
         );
 
         filePath =  filePath + fileName;

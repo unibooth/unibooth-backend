@@ -28,7 +28,7 @@ public class Posting {
     private String category;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Contents> contentsList;
+    private List<Content> contentsList;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private FileStream coverPhoto;
@@ -43,7 +43,7 @@ public class Posting {
     private Set<User> likeUsers = new HashSet<>();
 
 
-    public Posting(String postingTitle, FileStream coverPhoto, List<Contents> contentsList) {
+    public Posting(String postingTitle, FileStream coverPhoto, List<Content> contentsList) {
         this.postingTitle = postingTitle;
         this.coverPhoto = coverPhoto;
         this.contentsList = contentsList;
@@ -52,7 +52,7 @@ public class Posting {
     public static Posting of(
             String postingTitle,
             FileStream coverPhoto,
-            List<Contents> contentsList
+            List<Content> contentsList
     ) {
         return new Posting(postingTitle, coverPhoto, contentsList);
     }
