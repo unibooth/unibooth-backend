@@ -15,15 +15,17 @@ public class PhotoFileDto {
     private byte[] photo;
     private List<TagResDto> tagResDto;
 
-    public PhotoFileDto(byte[] photo, List<TagResDto> tagResDto) {
+    public PhotoFileDto(Long id, byte[] photo, List<TagResDto> tagResDto) {
+        this.id = id;
         this.photo = photo;
         this.tagResDto = tagResDto;
     }
 
     public static PhotoFileDto from(
+            Long id,
             byte[] photo,
             List<TagResDto> tagResDto
     ) {
-        return new PhotoFileDto(photo, tagResDto);
+        return new PhotoFileDto(id, photo, tagResDto);
     }
 }

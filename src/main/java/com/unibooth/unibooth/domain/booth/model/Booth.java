@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -22,10 +23,10 @@ public class Booth {
     @OneToOne(fetch = FetchType.EAGER)
     private Entertainer entertainer;
 
-
-
     @ManyToOne(fetch = FetchType.EAGER)
     private University university;
 
+    private int locationNum;
+    private Date date;
 
 }

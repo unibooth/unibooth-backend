@@ -4,13 +4,13 @@ package com.unibooth.unibooth.domain.booth.service;
 import com.unibooth.unibooth.domain.booth.dto.request.ContentDto;
 import com.unibooth.unibooth.domain.booth.dto.request.PostingListDto;
 import com.unibooth.unibooth.domain.booth.dto.response.*;
-import com.unibooth.unibooth.domain.booth.model.Content;
-import com.unibooth.unibooth.domain.booth.model.FileStream;
-import com.unibooth.unibooth.domain.booth.model.Posting;
-import com.unibooth.unibooth.domain.booth.model.Tag;
+import com.unibooth.unibooth.domain.booth.model.*;
+import com.unibooth.unibooth.domain.booth.repository.BoothRepository;
 import com.unibooth.unibooth.domain.booth.repository.ContentsRepository;
 import com.unibooth.unibooth.domain.booth.repository.PostingRepository;
 import com.unibooth.unibooth.domain.booth.repository.TagRepository;
+import com.unibooth.unibooth.domain.user.model.Entertainer;
+import com.unibooth.unibooth.domain.user.repository.EntertainerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.stereotype.Service;
@@ -34,9 +34,13 @@ public class PostingService {
     private final PostingRepository postingRepository;
     private final TagRepository tagRepository;
     private final ContentsRepository contentsRepository;
+    private final BoothRepository boothRepository;
+    private final EntertainerRepository entertainerRepository;
 
     @Transactional(rollbackFor = {Exception.class})
-    public void boothPosting(PostingListDto postingListDto) throws IOException, NoSuchAlgorithmException {
+    public void boothPosting(Long boothId, Long entertainerId, PostingListDto postingListDto) throws IOException, NoSuchAlgorithmException {
+        Booth booth = boothRepository.findByIdElseThrow(boothId);
+        Entertainer entertainer = entertainerRepository.findByIdElseThrow(entertainerId);
 
         List<Content> contentsList = new ArrayList<>();
         for(int i=0; i<postingListDto.getContentDtoList().size(); i++) {
@@ -45,7 +49,6 @@ public class PostingService {
             for(int j=0; j<contentDto.getTagDtoList().size(); j++) {
                 Tag tag  = Tag.of(contentDto.getTagDtoList().get(j));
                 tagRepository.save(tag);
-
                 tagList.add(tag);
             }
 
@@ -63,6 +66,8 @@ public class PostingService {
 
         FileStream coverPhoto = fileService.fileUpload(postingListDto.getCoverPhoto());
         Posting posting = Posting.of(
+                booth,
+                entertainer,
                 postingListDto.getPostingTitle(),
                 coverPhoto,
                 contentsList
@@ -87,6 +92,7 @@ public class PostingService {
                 Path path = Paths.get(file.getAbsolutePath());
                 ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(path));
                 PhotoFileDto photoFileDto = PhotoFileDto.from(
+                        contents.getFileStream().getId(),
                         resource.getByteArray(),
                         tagResDtos
                 );
@@ -96,7 +102,6 @@ public class PostingService {
                         contents.getContents(),
                         contents.getContentTitle()
                 );
-
                 contentResDtos.add(contentResDto);
             }
             File file = new File(posting.getCoverPhoto().getFilePath() + posting.getCoverPhoto().getFileName());
@@ -111,7 +116,6 @@ public class PostingService {
                             contentResDtos,
                             posting.getLikeUsers().size()
                     );
-
 
         return postingResDto;
     }
