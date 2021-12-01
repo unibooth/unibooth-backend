@@ -21,13 +21,14 @@ public class PostingController {
     private final PostingService postingService;
     private final LikeService likeService;
 
-    @PostMapping("/{boothId}")
+    @PostMapping("/{boothId}/{enterId}")
     @ResponseStatus(HttpStatus.OK)
     public String boothPosting(@PathVariable Long boothId,
+                               @PathVariable Long enterId,
                                @ModelAttribute PostingListDto postingDto
                                ) throws IOException, NoSuchAlgorithmException {
         System.out.println("postingDto.getPostingTitle() = " + postingDto.getPostingTitle());
-        postingService.boothPosting(postingDto);
+        postingService.boothPosting(boothId, enterId, postingDto);
         return "success";
     }
 
@@ -38,10 +39,10 @@ public class PostingController {
         return "success";
     }
 
-    @GetMapping("/detail/{boothId}")
+    @GetMapping("/detail/{boothId}/{enterId}")
     @ResponseStatus(HttpStatus.OK)
-    public PostingResDto getBoothDetail(@PathVariable Long boothId) throws IOException {
-        return postingService.getPostingDetail(boothId);
+    public PostingResDto getBoothDetail(@PathVariable Long boothId, @PathVariable Long enterId) throws IOException {
+        return postingService.getPostingDetail(boothId, enterId);
     }
 
     @GetMapping("/booth-all")

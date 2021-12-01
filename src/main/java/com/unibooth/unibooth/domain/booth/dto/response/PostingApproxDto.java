@@ -12,7 +12,7 @@ public class PostingApproxDto {
     private String postingTitle;
     private byte[] coverPhoto;
     private int like;
-
+// 댓글만 있으면 끝
     public PostingApproxDto(Long id, String postingTitle, byte[] coverPhoto, int like) {
         this.id = id;
         this.postingTitle = postingTitle;

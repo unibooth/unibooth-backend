@@ -9,6 +9,7 @@ import com.unibooth.unibooth.domain.booth.repository.BoothRepository;
 import com.unibooth.unibooth.domain.booth.repository.ContentsRepository;
 import com.unibooth.unibooth.domain.booth.repository.PostingRepository;
 import com.unibooth.unibooth.domain.booth.repository.TagRepository;
+import com.unibooth.unibooth.domain.user.dto.response.BoothEntertainerDto;
 import com.unibooth.unibooth.domain.user.model.Entertainer;
 import com.unibooth.unibooth.domain.user.repository.EntertainerRepository;
 import lombok.RequiredArgsConstructor;
@@ -72,13 +73,14 @@ public class PostingService {
                 coverPhoto,
                 contentsList
         );
-
         postingRepository.save(posting);
-
     }
 
-    public PostingResDto getPostingDetail(Long boothId) throws IOException {
+    public PostingResDto getPostingDetail(Long boothId, Long entertainerId) throws IOException {
             Posting posting = postingRepository.findByIdElseThrow(boothId);
+            Booth booth = boothRepository.findByIdElseThrow(boothId);
+            Entertainer entertainer = entertainerRepository.findByIdElseThrow(entertainerId);
+
             List<ContentResDto> contentResDtos = new ArrayList<>();
             for(int j=0; j<posting.getContentsList().size(); j++) {
                 Content contents = posting.getContentsList().get(j);
@@ -108,9 +110,11 @@ public class PostingService {
             Path path = Paths.get(file.getAbsolutePath());
             ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(path));
 
+            BoothEntertainerDto boothEntertainerDto = BoothEntertainerDto.from(booth, entertainer);
             PostingResDto postingResDto =
                     PostingResDto.from(
                             posting.getId(),
+                            boothEntertainerDto,
                             posting.getPostingTitle(),
                             resource.getByteArray(),
                             contentResDtos,
