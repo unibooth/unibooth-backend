@@ -20,7 +20,7 @@ public class EntertainerService {
     public void registerEntertainer(EnterCreateDto enterCreateDto) throws IOException, NoSuchAlgorithmException {
         FileStream fileStream = fileService.fileUpload(enterCreateDto.getProfilePhoto());
         Entertainer entertainer = Entertainer.of(
-                enterCreateDto.getName(),
+                enterCreateDto.getNickname(),
                 enterCreateDto.getIntroduce(),
                 fileStream
         );

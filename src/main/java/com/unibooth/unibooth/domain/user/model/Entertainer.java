@@ -20,7 +20,6 @@ public class Entertainer {
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private FileStream profilePhoto;
 
-
     @Column(length = 1000)
     private String introduce;
 
@@ -31,7 +30,7 @@ public class Entertainer {
     }
 
     public static Entertainer of(String nickname, String introduce, FileStream profilePhoto) {
-        return new Entertainer(nickname,introduce,  profilePhoto);
+        return new Entertainer(nickname, introduce,  profilePhoto);
     }
 
 }

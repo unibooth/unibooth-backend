@@ -13,9 +13,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 public class EnterCreateDto {
-
-    private String name;
-
+    private String nickname;
     private MultipartFile profilePhoto;
     private String introduce;
 }

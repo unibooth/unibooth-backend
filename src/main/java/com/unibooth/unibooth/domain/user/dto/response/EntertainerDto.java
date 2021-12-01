@@ -11,31 +11,28 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Date;
+
 
 @Data
 @Getter
 @NoArgsConstructor
 public class EntertainerDto {
-    private int locationNum;
-    private Date operateDate;
-    private String name;
-    private byte[] profilePhoto;
+    private String nickname;
+    private byte[] image;
 
-    public EntertainerDto(int locationNum, Date date, String name, byte[] byteArray) {
-        this.locationNum = locationNum;
-        this.operateDate = date;
-        this.name = name;
-        this.profilePhoto = byteArray;
+    public EntertainerDto(String nickname, byte[] image) {
+        this.nickname = nickname;
+        this.image = image;
     }
 
-
     public static EntertainerDto from(Entertainer entertainer) throws IOException {
+
         File file = new File(entertainer.getProfilePhoto().getFilePath() + entertainer.getProfilePhoto().getFileName());
         Path path = Paths.get(file.getAbsolutePath());
         ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(path));
+
         return new EntertainerDto(
-                entertainer.getName(),
+                entertainer.getNickname(),
                 resource.getByteArray());
     }
 }
