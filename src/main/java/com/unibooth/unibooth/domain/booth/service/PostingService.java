@@ -3,10 +3,7 @@ package com.unibooth.unibooth.domain.booth.service;
 
 import com.unibooth.unibooth.domain.booth.dto.request.ContentDto;
 import com.unibooth.unibooth.domain.booth.dto.request.PostingListDto;
-import com.unibooth.unibooth.domain.booth.dto.response.ContentResDto;
-import com.unibooth.unibooth.domain.booth.dto.response.PhotoFileDto;
-import com.unibooth.unibooth.domain.booth.dto.response.PostingResDto;
-import com.unibooth.unibooth.domain.booth.dto.response.TagResDto;
+import com.unibooth.unibooth.domain.booth.dto.response.*;
 import com.unibooth.unibooth.domain.booth.model.Content;
 import com.unibooth.unibooth.domain.booth.model.FileStream;
 import com.unibooth.unibooth.domain.booth.model.Posting;
@@ -27,6 +24,7 @@ import java.nio.file.Paths;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -74,11 +72,8 @@ public class PostingService {
 
     }
 
-    public List<PostingResDto> getAllPosting() throws IOException {
-        List<Posting> postingList = postingRepository.findAll();
-        List<PostingResDto> postingResDtos = new ArrayList<>();
-        for(int i=0; i<postingList.size(); i++) {
-            Posting posting = postingList.get(i);
+    public PostingResDto getPostingDetail(Long boothId) throws IOException {
+            Posting posting = postingRepository.findByIdElseThrow(boothId);
             List<ContentResDto> contentResDtos = new ArrayList<>();
             for(int j=0; j<posting.getContentsList().size(); j++) {
                 Content contents = posting.getContentsList().get(j);
@@ -110,14 +105,42 @@ public class PostingService {
 
             PostingResDto postingResDto =
                     PostingResDto.from(
+                            posting.getId(),
                             posting.getPostingTitle(),
                             resource.getByteArray(),
-                            contentResDtos
+                            contentResDtos,
+                            posting.getLikeUsers().size()
                     );
-            postingResDtos.add(postingResDto);
-        }
 
-        return postingResDtos;
+
+        return postingResDto;
+    }
+
+    public List<PostingApproxDto> getAllPosting() {
+        List<Posting> postingList = postingRepository.findAll();
+
+        List<PostingApproxDto> postingResDtoList =
+                postingList.stream().map(
+                        posting -> {
+                            File file = new File(posting.getCoverPhoto().getFilePath() + posting.getCoverPhoto().getFileName());
+                            Path path = Paths.get(file.getAbsolutePath());
+                            ByteArrayResource resource = null;
+                            try {
+                                resource = new ByteArrayResource(Files.readAllBytes(path));
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            return PostingApproxDto.from(
+                                    posting.getId(),
+                                    posting.getPostingTitle(),
+                                    resource.getByteArray(),
+                                    posting.getLikeUsers().size()
+                                );
+
+                        }
+                ).collect(Collectors.toList());
+
+        return postingResDtoList;
     }
 
 }

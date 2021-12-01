@@ -1,6 +1,7 @@
 package com.unibooth.unibooth.controller;
 
 import com.unibooth.unibooth.domain.booth.dto.request.PostingListDto;
+import com.unibooth.unibooth.domain.booth.dto.response.PostingApproxDto;
 import com.unibooth.unibooth.domain.booth.dto.response.PostingResDto;
 import com.unibooth.unibooth.domain.booth.service.LikeService;
 import com.unibooth.unibooth.domain.booth.service.PostingService;
@@ -37,12 +38,17 @@ public class PostingController {
         return "success";
     }
 
-    @GetMapping("/all")
+    @GetMapping("/detail/{boothId}")
     @ResponseStatus(HttpStatus.OK)
-    public List<PostingResDto> getAllBoothPosting() throws IOException {
-        return postingService.getAllPosting();
+    public PostingResDto getBoothDetail(@PathVariable Long boothId) throws IOException {
+        return postingService.getPostingDetail(boothId);
     }
 
+    @GetMapping("/booth-all")
+    @ResponseStatus(HttpStatus.OK)
+    public List<PostingApproxDto> getAllBoothPosting() {
+        return postingService.getAllPosting();
+    }
 
 
 

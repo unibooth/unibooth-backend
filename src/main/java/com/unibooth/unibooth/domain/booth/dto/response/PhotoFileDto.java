@@ -11,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @Getter
 public class PhotoFileDto {
-
+    private Long id;
     private byte[] photo;
     private List<TagResDto> tagResDto;
 
