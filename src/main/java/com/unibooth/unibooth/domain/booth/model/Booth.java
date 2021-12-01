@@ -1,6 +1,7 @@
 package com.unibooth.unibooth.domain.booth.model;
 
 
+import com.unibooth.unibooth.domain.booth.dto.request.BoothCreateDto;
 import com.unibooth.unibooth.domain.university.model.University;
 import com.unibooth.unibooth.domain.user.model.Entertainer;
 import lombok.Getter;
@@ -18,17 +19,35 @@ public class Booth {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String boothCategory;
-
     @OneToOne(fetch = FetchType.EAGER)
     private Entertainer entertainer;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    private University university;
+//    @ManyToOne(fetch = FetchType.EAGER)
+//    private University university;
 
+    private String university;
     private String location;
     private String type;
-
     //private Date date;
     private String date;
+
+    public Booth(Entertainer entertainer, String university, String location, String type, String date) {
+        this.entertainer = entertainer;
+        this.university = university;
+        this.location = location;
+        this.type = type;
+        this.date = date;
+    }
+
+    public static Booth of(
+            Entertainer entertainer,
+            String university,
+            String location,
+            String type,
+            String date
+        ){
+        return new Booth(
+          entertainer, university, location, type, date
+        );
+    }
 }

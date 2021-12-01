@@ -1,21 +1,18 @@
 package com.unibooth.unibooth.domain.booth.dto.request;
 
-import com.unibooth.unibooth.domain.university.model.University;
-import com.unibooth.unibooth.domain.user.model.Entertainer;
 
-import javax.persistence.*;
-import java.util.Date;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
+@Data
+@Getter
 public class BoothCreateDto {
 
-    private String boothCategory;
+    private String type;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    private Entertainer entertainer;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    private University university;
-
-    private int locationNum;
-    private Date date;
+    private String university;
+    private String location;
+    private String date;
 }
