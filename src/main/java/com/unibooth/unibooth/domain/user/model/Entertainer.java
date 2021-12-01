@@ -15,23 +15,23 @@ public class Entertainer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String nickname;
+
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private FileStream profilePhoto;
 
-    private String personalSNSUrl;
 
     @Column(length = 1000)
     private String introduce;
 
-    public Entertainer(String name, String introduce, FileStream profilePhoto) {
-        this.name = name;
+    public Entertainer(String nickname, String introduce, FileStream profilePhoto) {
+        this.nickname = nickname;
         this.introduce = introduce;
         this.profilePhoto = profilePhoto;
     }
 
-    public static Entertainer of(String name, String introduce, FileStream profilePhoto) {
-        return new Entertainer(name,introduce,  profilePhoto);
+    public static Entertainer of(String nickname, String introduce, FileStream profilePhoto) {
+        return new Entertainer(nickname,introduce,  profilePhoto);
     }
 
 }

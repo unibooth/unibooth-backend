@@ -5,7 +5,12 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/booth/")
-public class BoothApplyController {
+public class BoothCreateController {
 
     // 엔터테이너 create
+
+    @PostMapping
+    public void boothCreate() {
+
+    }
 }

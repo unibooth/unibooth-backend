@@ -9,18 +9,24 @@ import lombok.NoArgsConstructor;
 @Getter
 public class PostingApproxDto {
     private Long id;
-    private String postingTitle;
-    private byte[] coverPhoto;
-    private int like;
+    private String type;
+    private String name;
+    private byte[] image;
+    private int likeCount;
+
+    //아직 못넣음
+    private int shareCount;
+
 // 댓글만 있으면 끝
-    public PostingApproxDto(Long id, String postingTitle, byte[] coverPhoto, int like) {
+    public PostingApproxDto(Long id, String postingTitle, byte[] coverPhoto, int like, String type) {
         this.id = id;
-        this.postingTitle = postingTitle;
-        this.coverPhoto = coverPhoto;
-        this.like = like;
+        this.name = postingTitle;
+        this.image = coverPhoto;
+        this.likeCount = like;
+        this.type = type;
     }
 
-    public static PostingApproxDto from(Long id, String postingTitle, byte[] coverPhoto, int like) {
-        return new PostingApproxDto(id, postingTitle, coverPhoto, like);
+    public static PostingApproxDto from(Long id, String postingTitle, byte[] coverPhoto, int like, String type) {
+        return new PostingApproxDto(id, postingTitle, coverPhoto, like, type);
     }
 }

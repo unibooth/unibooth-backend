@@ -10,16 +10,15 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class TagResDto {
-
     private Long id;
-    private String item;
+    private String name;
     private int price;
     private int positionX;
     private int positionY;
 
     public TagResDto(Long id, String item, int price, int positionX, int positionY) {
         this.id = id;
-        this.item = item;
+        this.name = item;
         this.price = price;
         this.positionX = positionX;
         this.positionY = positionY;

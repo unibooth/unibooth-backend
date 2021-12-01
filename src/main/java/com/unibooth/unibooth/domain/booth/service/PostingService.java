@@ -9,7 +9,7 @@ import com.unibooth.unibooth.domain.booth.repository.BoothRepository;
 import com.unibooth.unibooth.domain.booth.repository.ContentsRepository;
 import com.unibooth.unibooth.domain.booth.repository.PostingRepository;
 import com.unibooth.unibooth.domain.booth.repository.TagRepository;
-import com.unibooth.unibooth.domain.user.dto.response.BoothEntertainerDto;
+import com.unibooth.unibooth.domain.user.dto.response.EntertainerDto;
 import com.unibooth.unibooth.domain.user.model.Entertainer;
 import com.unibooth.unibooth.domain.user.repository.EntertainerRepository;
 import lombok.RequiredArgsConstructor;
@@ -93,14 +93,11 @@ public class PostingService {
                 File file = new File(contents.getFileStream().getFilePath() + contents.getFileStream().getFileName());
                 Path path = Paths.get(file.getAbsolutePath());
                 ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(path));
-                PhotoFileDto photoFileDto = PhotoFileDto.from(
-                        contents.getFileStream().getId(),
-                        resource.getByteArray(),
-                        tagResDtos
-                );
+
                 ContentResDto contentResDto = ContentResDto.from(
                         contents.getId(),
-                        photoFileDto,
+                        resource.getByteArray(),
+                        tagResDtos,
                         contents.getContents(),
                         contents.getContentTitle()
                 );
@@ -110,13 +107,17 @@ public class PostingService {
             Path path = Paths.get(file.getAbsolutePath());
             ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(path));
 
-            BoothEntertainerDto boothEntertainerDto = BoothEntertainerDto.from(booth, entertainer);
+            EntertainerDto entertainerDto = EntertainerDto.from(entertainer);
+
             PostingResDto postingResDto =
                     PostingResDto.from(
                             posting.getId(),
-                            boothEntertainerDto,
+                            booth.getType(),
+                            entertainerDto,
                             posting.getPostingTitle(),
                             resource.getByteArray(),
+                            booth.getLocation(),
+                            booth.getDate(),
                             contentResDtos,
                             posting.getLikeUsers().size()
                     );
@@ -142,8 +143,9 @@ public class PostingService {
                                     posting.getId(),
                                     posting.getPostingTitle(),
                                     resource.getByteArray(),
-                                    posting.getLikeUsers().size()
-                                );
+                                    posting.getLikeUsers().size(),
+                                    posting.getBooth().getType()
+                            );
 
                         }
                 ).collect(Collectors.toList());

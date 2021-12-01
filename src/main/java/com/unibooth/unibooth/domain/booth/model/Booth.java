@@ -26,7 +26,9 @@ public class Booth {
     @ManyToOne(fetch = FetchType.EAGER)
     private University university;
 
-    private int locationNum;
-    private Date date;
+    private String location;
+    private String type;
 
+    //private Date date;
+    private String date;
 }

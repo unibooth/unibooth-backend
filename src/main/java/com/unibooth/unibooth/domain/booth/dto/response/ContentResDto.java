@@ -13,24 +13,29 @@ import java.util.List;
 public class ContentResDto {
 
     private Long id;
-    private String contents;
-    private String contentTitle;
-    private PhotoFileDto photoFile;
+    private String description;
+    private String title;
+    private byte[] image;
+
+    private List<TagResDto> tags;
+
     // for tag
 
-    public ContentResDto(Long id, PhotoFileDto photoFile, String contents, String contentTitle) {
+    public ContentResDto(Long id, byte[] image, List<TagResDto> tags, String contents, String contentTitle) {
         this.id = id;
-        this.photoFile = photoFile;
-        this.contents = contents;
-        this.contentTitle = contentTitle;
+        this.image = image;
+        this.tags = tags;
+        this.description = contents;
+        this.title = contentTitle;
     }
 
     public static ContentResDto from(
             Long id,
-            PhotoFileDto photoFile,
+            byte[] image,
+            List<TagResDto> tags,
             String contents,
             String contentTitle
     ) {
-        return new ContentResDto(id, photoFile, contents, contentTitle);
+        return new ContentResDto(id, image, tags, contents, contentTitle);
     }
 }

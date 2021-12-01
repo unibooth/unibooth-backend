@@ -13,7 +13,7 @@ import java.security.NoSuchAlgorithmException;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/entertainer")
+@RequestMapping("/api/entertainer")
 public class EntertainerController {
     private final EntertainerService entertainerService;
 
