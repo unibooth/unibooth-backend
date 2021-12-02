@@ -24,4 +24,13 @@ public class Collect {
     @ManyToOne(fetch = FetchType.EAGER)
     private User user;
 
+    public Collect(Booth booth, User user) {
+        this.booth = booth;
+        this.user = user;
+    }
+
+    public static Collect of(Booth booth, User user) {
+        return new Collect(booth, user);
+    }
+
 }

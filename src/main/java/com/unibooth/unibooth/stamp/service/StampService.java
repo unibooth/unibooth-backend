@@ -18,12 +18,15 @@ public class StampService {
     private final UserRepository userRepository;
     private final CollectRepository collectRepository;
 
-    public boolean codeValidate(Long boothId, String code) {
+    public boolean codeValidateAndSave(Long boothId, Long userId, String code) {
         Booth booth = boothRepository.findByIdElseThrow(boothId);
+        User user = userRepository.findByIdElseThrow(userId);
 
         String stampCode = booth.getStampCode();
 
         if(stampCode.equals(code)) {
+            Collect collect = Collect.of(booth, user);
+            collectRepository.save(collect);
             return true;
         }else {
             return false;

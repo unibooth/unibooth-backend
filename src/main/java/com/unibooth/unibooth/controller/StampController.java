@@ -14,9 +14,9 @@ public class StampController {
 
     private final StampService stampService;
 
-    @PostMapping("/{boothId}")
-    public boolean stampValidate(@PathVariable Long boothId, @RequestParam String code) {
-        return stampService.codeValidate(boothId, code);
+    @PostMapping("/{boothId}/{userId}")
+    public boolean stampValidate(@PathVariable Long boothId,@PathVariable Long userId, @RequestParam String code) {
+        return stampService.codeValidateAndSave(boothId, userId, code);
     }
 
     @GetMapping("/user/{userId}")
