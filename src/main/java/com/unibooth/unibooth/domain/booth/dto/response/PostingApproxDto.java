@@ -18,6 +18,7 @@ public class PostingApproxDto {
     private int likeCount;
     private List<CommentResDto> comments;
     private EntertainerDto entertainer;
+
     //아직 못넣음
     private int shareCount;
     private double latitude;
@@ -56,7 +57,6 @@ public class PostingApproxDto {
             double latitude,
             double longitude,
             EntertainerDto entertainer
-
 
     ) {
         return new PostingApproxDto(id, postingTitle, coverPhoto, like, type, comments, latitude, longitude, entertainer);
