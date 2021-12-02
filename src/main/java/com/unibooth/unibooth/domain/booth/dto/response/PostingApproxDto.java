@@ -33,7 +33,7 @@ public class PostingApproxDto {
                             List<CommentResDto> comments,
                             double latitude,
                             double longitude,
-                            EntertainerDto entertainer;
+                            EntertainerDto entertainer
     ) {
         this.id = id;
         this.name = postingTitle;
