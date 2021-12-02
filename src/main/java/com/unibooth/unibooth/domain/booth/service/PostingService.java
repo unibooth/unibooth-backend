@@ -83,6 +83,15 @@ public class PostingService {
             Posting posting = postingRepository.findByIdElseThrow(postId);
             Booth booth = boothRepository.findByIdElseThrow(postId);
             Entertainer entertainer = entertainerRepository.findByIdElseThrow(entertainerId);
+            List<Comment> commentList = commentRepository.findByPostingId(postId);
+
+            List<CommentResDto> commentResDtoList = commentList
+                    .stream().map(comment -> CommentResDto.from(
+                            comment.getId(),
+                            comment.getCreatedAt(),
+                            comment.getContent(),
+                            comment.getUser()
+                    )).collect(Collectors.toList());
 
             List<ContentResDto> contentResDtos = new ArrayList<>();
             for(int j=0; j<posting.getContentsList().size(); j++) {
@@ -122,7 +131,8 @@ public class PostingService {
                             booth.getLocation(),
                             booth.getDate(),
                             contentResDtos,
-                            posting.getLikeUsers().size()
+                            posting.getLikeUsers().size(),
+                            commentResDtoList
                     );
 
         return postingResDto;
@@ -134,6 +144,16 @@ public class PostingService {
         List<PostingApproxDto> postingResDtoList =
                 postingList.stream().map(
                         posting -> {
+                            List<CommentResDto> comments = commentRepository.findByPostingId(posting.getId())
+                                    .stream().map(
+                                            comment -> CommentResDto.from(
+                                                    comment.getId(),
+                                                    comment.getCreatedAt(),
+                                                    comment.getContent(),
+                                                    comment.getUser()
+                                            )
+                                    ).collect(Collectors.toList());
+
                             File file = new File(posting.getCoverPhoto().getFilePath() + posting.getCoverPhoto().getFileName());
                             Path path = Paths.get(file.getAbsolutePath());
                             ByteArrayResource resource = null;
@@ -147,7 +167,8 @@ public class PostingService {
                                     posting.getPostingTitle(),
                                     resource.getByteArray(),
                                     posting.getLikeUsers().size(),
-                                    posting.getBooth().getType()
+                                    posting.getBooth().getType(),
+                                    comments
                             );
 
                         }
