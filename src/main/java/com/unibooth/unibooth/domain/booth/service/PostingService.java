@@ -158,11 +158,16 @@ public class PostingService {
                             File file = new File(posting.getCoverPhoto().getFilePath() + posting.getCoverPhoto().getFileName());
                             Path path = Paths.get(file.getAbsolutePath());
                             ByteArrayResource resource = null;
+                            EntertainerDto entertainerDto = null;
+
                             try {
                                 resource = new ByteArrayResource(Files.readAllBytes(path));
+                                entertainerDto = EntertainerDto.from(posting.getEntertainer());
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
+
+
                             return PostingApproxDto.from(
                                     posting.getId(),
                                     posting.getPostingTitle(),
@@ -171,7 +176,9 @@ public class PostingService {
                                     posting.getBooth().getType(),
                                     comments,
                                     posting.getBooth().getLatitude(),
-                                    posting.getBooth().getLongitude()
+                                    posting.getBooth().getLongitude(),
+                                    entertainerDto
+
                             );
 
                         }

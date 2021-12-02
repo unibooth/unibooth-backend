@@ -17,10 +17,12 @@ import java.nio.file.Paths;
 @Getter
 @NoArgsConstructor
 public class EntertainerDto {
+    private Long id;
     private String nickname;
     private byte[] image;
 
-    public EntertainerDto(String nickname, byte[] image) {
+    public EntertainerDto(Long id, String nickname, byte[] image) {
+        this.id = id;
         this.nickname = nickname;
         this.image = image;
     }
@@ -32,6 +34,7 @@ public class EntertainerDto {
         ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(path));
 
         return new EntertainerDto(
+                entertainer.getId(),
                 entertainer.getNickname(),
                 resource.getByteArray());
     }
