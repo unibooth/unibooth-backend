@@ -11,7 +11,8 @@ import lombok.NoArgsConstructor;
 public class BoothCreateDto {
 
     private String type;
-
+    private double latitude;
+    private double longitude;
     private String university;
     private String location;
     private String date;
