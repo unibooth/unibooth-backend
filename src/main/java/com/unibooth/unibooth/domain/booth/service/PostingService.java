@@ -74,7 +74,8 @@ public class PostingService {
                 entertainer,
                 postingListDto.getPostingTitle(),
                 coverPhoto,
-                contentsList
+                contentsList,
+                booth.getUniversity()
         );
         postingRepository.save(posting);
     }
@@ -138,8 +139,8 @@ public class PostingService {
         return postingResDto;
     }
 
-    public List<PostingApproxDto> getAllPosting() {
-        List<Posting> postingList = postingRepository.findAll();
+    public List<PostingApproxDto> getPostingByUniv(String university) {
+        List<Posting> postingList = postingRepository.findByUniversity(university);
 
         List<PostingApproxDto> postingResDtoList =
                 postingList.stream().map(
@@ -157,18 +158,27 @@ public class PostingService {
                             File file = new File(posting.getCoverPhoto().getFilePath() + posting.getCoverPhoto().getFileName());
                             Path path = Paths.get(file.getAbsolutePath());
                             ByteArrayResource resource = null;
+                            EntertainerDto entertainerDto = null;
+
                             try {
                                 resource = new ByteArrayResource(Files.readAllBytes(path));
+                                entertainerDto = EntertainerDto.from(posting.getEntertainer());
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
+
+
                             return PostingApproxDto.from(
                                     posting.getId(),
                                     posting.getPostingTitle(),
                                     resource.getByteArray(),
                                     posting.getLikeUsers().size(),
                                     posting.getBooth().getType(),
-                                    comments
+                                    comments,
+                                    posting.getBooth().getLatitude(),
+                                    posting.getBooth().getLongitude(),
+                                    entertainerDto
+
                             );
 
                         }

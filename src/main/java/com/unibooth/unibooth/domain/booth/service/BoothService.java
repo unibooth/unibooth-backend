@@ -21,7 +21,9 @@ public class BoothService {
                 boothCreateDto.getUniversity(),
                 boothCreateDto.getLocation(),
                 boothCreateDto.getType(),
-                boothCreateDto.getDate()
+                boothCreateDto.getDate(),
+                boothCreateDto.getLatitude(),
+                boothCreateDto.getLongitude()
         );
 
         boothRepository.save(booth);

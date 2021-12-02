@@ -23,14 +23,18 @@ public class Booth {
     private String type;
     private String date;
     private String stampCode;
+    private double latitude;
+    private double longitude;
 
-    public Booth(Entertainer entertainer, String university, String location, String type, String date) {
+    public Booth(Entertainer entertainer, String university, String location, String type, String date, double latitude, double longitude) {
         this.entertainer = entertainer;
         this.university = university;
         this.location = location;
         this.type = type;
         this.date = date;
         this.stampCode = Integer.toString((int)(Math.random() * (99999 - 10000 + 1)) + 10000);
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
     public static Booth of(
@@ -38,10 +42,12 @@ public class Booth {
             String university,
             String location,
             String type,
-            String date
+            String date,
+            double latitude,
+            double longitude
         ){
         return new Booth(
-          entertainer, university, location, type, date
+          entertainer, university, location, type, date, latitude, longitude
         );
     }
 }

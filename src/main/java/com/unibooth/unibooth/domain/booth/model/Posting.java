@@ -31,6 +31,7 @@ public class Posting {
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private FileStream coverPhoto;
     private String postingTitle;
+    private String university;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
@@ -41,12 +42,13 @@ public class Posting {
     private Set<User> likeUsers = new HashSet<>();
 
 
-    public Posting(Booth booth, Entertainer entertainer,String postingTitle, FileStream coverPhoto, List<Content> contentsList) {
+    public Posting(Booth booth, Entertainer entertainer,String postingTitle, FileStream coverPhoto, List<Content> contentsList, String university) {
         this.booth = booth;
         this.entertainer = entertainer;
         this.postingTitle = postingTitle;
         this.coverPhoto = coverPhoto;
         this.contentsList = contentsList;
+        this.university = university;
     }
 
     public static Posting of(
@@ -54,9 +56,10 @@ public class Posting {
             Entertainer entertainer,
             String postingTitle,
             FileStream coverPhoto,
-            List<Content> contentsList
+            List<Content> contentsList,
+            String university
     ) {
-        return new Posting(booth, entertainer, postingTitle, coverPhoto, contentsList);
+        return new Posting(booth, entertainer, postingTitle, coverPhoto, contentsList, university);
     }
 
 }
