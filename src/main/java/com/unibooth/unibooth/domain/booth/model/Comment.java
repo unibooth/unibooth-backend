@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -22,4 +23,15 @@ public class Comment {
     @ManyToOne(fetch = FetchType.EAGER)
     private User user;
     private Date createdAt;
+
+    public Comment(String content, User user, Posting posting) {
+        this.content = content;
+        this.user = user;
+        this.posting = posting;
+        this.createdAt = new Date(System.currentTimeMillis());
+    }
+
+    public static  Comment of(String content, User user, Posting posting) {
+        return new Comment(content, user, posting);
+    }
 }

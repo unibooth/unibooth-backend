@@ -1,17 +1,17 @@
 package com.unibooth.unibooth.domain.booth.service;
 
 
+import com.unibooth.unibooth.domain.booth.dto.request.CommentDto;
 import com.unibooth.unibooth.domain.booth.dto.request.ContentDto;
 import com.unibooth.unibooth.domain.booth.dto.request.PostingListDto;
 import com.unibooth.unibooth.domain.booth.dto.response.*;
 import com.unibooth.unibooth.domain.booth.model.*;
-import com.unibooth.unibooth.domain.booth.repository.BoothRepository;
-import com.unibooth.unibooth.domain.booth.repository.ContentsRepository;
-import com.unibooth.unibooth.domain.booth.repository.PostingRepository;
-import com.unibooth.unibooth.domain.booth.repository.TagRepository;
+import com.unibooth.unibooth.domain.booth.repository.*;
 import com.unibooth.unibooth.domain.user.dto.response.EntertainerDto;
 import com.unibooth.unibooth.domain.user.model.Entertainer;
+import com.unibooth.unibooth.domain.user.model.User;
 import com.unibooth.unibooth.domain.user.repository.EntertainerRepository;
+import com.unibooth.unibooth.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.stereotype.Service;
@@ -36,7 +36,10 @@ public class PostingService {
     private final TagRepository tagRepository;
     private final ContentsRepository contentsRepository;
     private final BoothRepository boothRepository;
+
+    private final CommentRepository commentRepository;
     private final EntertainerRepository entertainerRepository;
+    private final UserRepository userRepository;
 
     @Transactional(rollbackFor = {Exception.class})
     public void boothPosting(Long boothId, Long entertainerId, PostingListDto postingListDto) throws IOException, NoSuchAlgorithmException {
@@ -151,6 +154,13 @@ public class PostingService {
                 ).collect(Collectors.toList());
 
         return postingResDtoList;
+    }
+
+    public void addComment(Long postId, Long userId, CommentDto commentDto) {
+        Posting posting = postingRepository.findByIdElseThrow(postId);
+        User user = userRepository.findByIdElseThrow(userId);
+        Comment comment = Comment.of(commentDto.getContent(), user, posting);
+        commentRepository.save(comment);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.unibooth.unibooth.controller;
 
+import com.unibooth.unibooth.domain.booth.dto.request.CommentDto;
 import com.unibooth.unibooth.domain.booth.dto.request.PostingListDto;
 import com.unibooth.unibooth.domain.booth.dto.response.PostingApproxDto;
 import com.unibooth.unibooth.domain.booth.dto.response.PostingResDto;
@@ -22,7 +23,6 @@ public class PostingController {
 
     private final PostingService postingService;
     private final LikeService likeService;
-    private final CommentRepository commentRepository;
 
     @PostMapping("/{boothId}/{enterId}")
     @ResponseStatus(HttpStatus.OK)
@@ -56,8 +56,9 @@ public class PostingController {
 
 
     @PostMapping("/comment/{postId}/{userId}")
-    public void addComment(@PathVariable Long postId, @PathVariable Long userId) {
-
+    public String addComment(@PathVariable Long postId, @PathVariable Long userId, @RequestBody CommentDto commentDto) {
+        postingService.addComment(postId, userId, commentDto);
+        return "success";
     }
 
 
