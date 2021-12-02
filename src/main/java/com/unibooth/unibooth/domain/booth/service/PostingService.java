@@ -76,9 +76,9 @@ public class PostingService {
         postingRepository.save(posting);
     }
 
-    public PostingResDto getPostingDetail(Long boothId, Long entertainerId) throws IOException {
-            Posting posting = postingRepository.findByIdElseThrow(boothId);
-            Booth booth = boothRepository.findByIdElseThrow(boothId);
+    public PostingResDto getPostingDetail(Long postId, Long entertainerId) throws IOException {
+            Posting posting = postingRepository.findByIdElseThrow(postId);
+            Booth booth = boothRepository.findByIdElseThrow(postId);
             Entertainer entertainer = entertainerRepository.findByIdElseThrow(entertainerId);
 
             List<ContentResDto> contentResDtos = new ArrayList<>();

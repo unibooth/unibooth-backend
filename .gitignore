@@ -4,8 +4,8 @@
 src/main/resources/application-oauth.properties
 
 
-build
+build/**
 .idea
-./gradle
+./gradle/**
 
 /contentsPhoto

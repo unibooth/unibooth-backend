@@ -39,13 +39,13 @@ public class PostingController {
         return "success";
     }
 
-    @GetMapping("/detail/{boothId}/{enterId}")
+    @GetMapping("/detail/{postId}/{enterId}")
     @ResponseStatus(HttpStatus.OK)
-    public PostingResDto getBoothDetail(@PathVariable Long boothId, @PathVariable Long enterId) throws IOException {
-        return postingService.getPostingDetail(boothId, enterId);
+    public PostingResDto getBoothDetail(@PathVariable Long postId, @PathVariable Long enterId) throws IOException {
+        return postingService.getPostingDetail(postId, enterId);
     }
 
-    @GetMapping("/booth-all")
+    @GetMapping("/all")
     @ResponseStatus(HttpStatus.OK)
     public List<PostingApproxDto> getAllBoothPosting() {
         return postingService.getAllPosting();
