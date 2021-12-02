@@ -22,14 +22,11 @@ public class Booth {
     @OneToOne(fetch = FetchType.EAGER)
     private Entertainer entertainer;
 
-//    @ManyToOne(fetch = FetchType.EAGER)
-//    private University university;
-
     private String university;
     private String location;
     private String type;
-    //private Date date;
     private String date;
+    private String stampCode;
 
     public Booth(Entertainer entertainer, String university, String location, String type, String date) {
         this.entertainer = entertainer;
