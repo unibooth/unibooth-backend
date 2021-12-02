@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Getter
 @NoArgsConstructor
 // 스탬프 수집 모델
-public class Stamp {
+public class Collect {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
