@@ -17,6 +17,9 @@ public class Comment {
     private String content;
 
     @ManyToOne(fetch = FetchType.EAGER)
+    private Posting posting;
+
+    @ManyToOne(fetch = FetchType.EAGER)
     private User user;
     private Date createdAt;
 }

@@ -3,6 +3,7 @@ package com.unibooth.unibooth.controller;
 import com.unibooth.unibooth.domain.booth.dto.request.PostingListDto;
 import com.unibooth.unibooth.domain.booth.dto.response.PostingApproxDto;
 import com.unibooth.unibooth.domain.booth.dto.response.PostingResDto;
+import com.unibooth.unibooth.domain.booth.repository.CommentRepository;
 import com.unibooth.unibooth.domain.booth.service.LikeService;
 import com.unibooth.unibooth.domain.booth.service.PostingService;
 import lombok.RequiredArgsConstructor;
@@ -16,10 +17,12 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/api/posting/")
+
 public class PostingController {
 
     private final PostingService postingService;
     private final LikeService likeService;
+    private final CommentRepository commentRepository;
 
     @PostMapping("/{boothId}/{enterId}")
     @ResponseStatus(HttpStatus.OK)
@@ -51,6 +54,11 @@ public class PostingController {
         return postingService.getAllPosting();
     }
 
+
+    @PostMapping("/comment/{postId}/{userId}")
+    public void addComment(@PathVariable Long postId, @PathVariable Long userId) {
+
+    }
 
 
 }
