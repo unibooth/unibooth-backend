@@ -1,8 +1,10 @@
 package com.unibooth.unibooth.controller;
 
+import com.unibooth.unibooth.domain.booth.dto.request.CommentDto;
 import com.unibooth.unibooth.domain.booth.dto.request.PostingListDto;
 import com.unibooth.unibooth.domain.booth.dto.response.PostingApproxDto;
 import com.unibooth.unibooth.domain.booth.dto.response.PostingResDto;
+import com.unibooth.unibooth.domain.booth.repository.CommentRepository;
 import com.unibooth.unibooth.domain.booth.service.LikeService;
 import com.unibooth.unibooth.domain.booth.service.PostingService;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +18,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "/api/posting/")
+
 public class PostingController {
 
     private final PostingService postingService;
@@ -51,6 +54,12 @@ public class PostingController {
         return postingService.getAllPosting();
     }
 
+
+    @PostMapping("/comment/{postId}/{userId}")
+    public String addComment(@PathVariable Long postId, @PathVariable Long userId, @RequestBody CommentDto commentDto) {
+        postingService.addComment(postId, userId, commentDto);
+        return "success";
+    }
 
 
 }

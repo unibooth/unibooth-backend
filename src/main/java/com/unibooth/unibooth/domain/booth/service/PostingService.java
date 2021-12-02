@@ -1,17 +1,17 @@
 package com.unibooth.unibooth.domain.booth.service;
 
 
+import com.unibooth.unibooth.domain.booth.dto.request.CommentDto;
 import com.unibooth.unibooth.domain.booth.dto.request.ContentDto;
 import com.unibooth.unibooth.domain.booth.dto.request.PostingListDto;
 import com.unibooth.unibooth.domain.booth.dto.response.*;
 import com.unibooth.unibooth.domain.booth.model.*;
-import com.unibooth.unibooth.domain.booth.repository.BoothRepository;
-import com.unibooth.unibooth.domain.booth.repository.ContentsRepository;
-import com.unibooth.unibooth.domain.booth.repository.PostingRepository;
-import com.unibooth.unibooth.domain.booth.repository.TagRepository;
+import com.unibooth.unibooth.domain.booth.repository.*;
 import com.unibooth.unibooth.domain.user.dto.response.EntertainerDto;
 import com.unibooth.unibooth.domain.user.model.Entertainer;
+import com.unibooth.unibooth.domain.user.model.User;
 import com.unibooth.unibooth.domain.user.repository.EntertainerRepository;
+import com.unibooth.unibooth.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.stereotype.Service;
@@ -36,7 +36,10 @@ public class PostingService {
     private final TagRepository tagRepository;
     private final ContentsRepository contentsRepository;
     private final BoothRepository boothRepository;
+
+    private final CommentRepository commentRepository;
     private final EntertainerRepository entertainerRepository;
+    private final UserRepository userRepository;
 
     @Transactional(rollbackFor = {Exception.class})
     public void boothPosting(Long boothId, Long entertainerId, PostingListDto postingListDto) throws IOException, NoSuchAlgorithmException {
@@ -80,6 +83,15 @@ public class PostingService {
             Posting posting = postingRepository.findByIdElseThrow(postId);
             Booth booth = boothRepository.findByIdElseThrow(postId);
             Entertainer entertainer = entertainerRepository.findByIdElseThrow(entertainerId);
+            List<Comment> commentList = commentRepository.findByPostingId(postId);
+
+            List<CommentResDto> commentResDtoList = commentList
+                    .stream().map(comment -> CommentResDto.from(
+                            comment.getId(),
+                            comment.getCreatedAt(),
+                            comment.getContent(),
+                            comment.getUser()
+                    )).collect(Collectors.toList());
 
             List<ContentResDto> contentResDtos = new ArrayList<>();
             for(int j=0; j<posting.getContentsList().size(); j++) {
@@ -119,7 +131,8 @@ public class PostingService {
                             booth.getLocation(),
                             booth.getDate(),
                             contentResDtos,
-                            posting.getLikeUsers().size()
+                            posting.getLikeUsers().size(),
+                            commentResDtoList
                     );
 
         return postingResDto;
@@ -131,6 +144,16 @@ public class PostingService {
         List<PostingApproxDto> postingResDtoList =
                 postingList.stream().map(
                         posting -> {
+                            List<CommentResDto> comments = commentRepository.findByPostingId(posting.getId())
+                                    .stream().map(
+                                            comment -> CommentResDto.from(
+                                                    comment.getId(),
+                                                    comment.getCreatedAt(),
+                                                    comment.getContent(),
+                                                    comment.getUser()
+                                            )
+                                    ).collect(Collectors.toList());
+
                             File file = new File(posting.getCoverPhoto().getFilePath() + posting.getCoverPhoto().getFileName());
                             Path path = Paths.get(file.getAbsolutePath());
                             ByteArrayResource resource = null;
@@ -144,13 +167,21 @@ public class PostingService {
                                     posting.getPostingTitle(),
                                     resource.getByteArray(),
                                     posting.getLikeUsers().size(),
-                                    posting.getBooth().getType()
+                                    posting.getBooth().getType(),
+                                    comments
                             );
 
                         }
                 ).collect(Collectors.toList());
 
         return postingResDtoList;
+    }
+
+    public void addComment(Long postId, Long userId, CommentDto commentDto) {
+        Posting posting = postingRepository.findByIdElseThrow(postId);
+        User user = userRepository.findByIdElseThrow(userId);
+        Comment comment = Comment.of(commentDto.getContent(), user, posting);
+        commentRepository.save(comment);
     }
 
 }
