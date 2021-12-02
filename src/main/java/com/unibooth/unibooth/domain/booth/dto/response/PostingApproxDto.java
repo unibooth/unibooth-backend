@@ -20,17 +20,43 @@ public class PostingApproxDto {
     //아직 못넣음
     private int shareCount;
 
-// 댓글만 있으면 끝
-    public PostingApproxDto(Long id, String postingTitle, byte[] coverPhoto, int like, String type, List<CommentResDto> comments) {
+    private double latitude;
+    private double longitude;
+
+
+
+    // 댓글만 있으면 끝
+    public PostingApproxDto(Long id,
+                            String postingTitle,
+                            byte[] coverPhoto,
+                            int like,
+                            String type,
+                            List<CommentResDto> comments,
+                            double latitude,
+                            double longitude
+    ) {
         this.id = id;
         this.name = postingTitle;
         this.image = coverPhoto;
         this.likeCount = like;
         this.type = type;
-        this.comments =comments;
+        this.comments = comments;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
-    public static PostingApproxDto from(Long id, String postingTitle, byte[] coverPhoto, int like, String type, List<CommentResDto> comments) {
-        return new PostingApproxDto(id, postingTitle, coverPhoto, like, type, comments);
+    public static PostingApproxDto from(
+            Long id,
+            String postingTitle,
+            byte[] coverPhoto,
+            int like,
+            String type,
+            List<CommentResDto> comments,
+            double latitude,
+            double longitude
+
+
+    ) {
+        return new PostingApproxDto(id, postingTitle, coverPhoto, like, type, comments, latitude, longitude);
     }
 }

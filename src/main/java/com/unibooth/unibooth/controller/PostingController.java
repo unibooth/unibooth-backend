@@ -48,10 +48,11 @@ public class PostingController {
         return postingService.getPostingDetail(postId, enterId);
     }
 
-    @GetMapping("/all")
+    @GetMapping("/univ")
     @ResponseStatus(HttpStatus.OK)
-    public List<PostingApproxDto> getAllBoothPosting() {
-        return postingService.getAllPosting();
+    public List<PostingApproxDto> getAllBoothPosting(@RequestParam String university) {
+        System.out.println("university = " + university);
+        return postingService.getPostingByUniv(university);
     }
 
 
