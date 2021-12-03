@@ -25,6 +25,8 @@ public class PostingResDto {
     private int likeCount;
     private int shareCount;
 
+    private String university;
+
 
     public PostingResDto(Long id,
                          String type,
@@ -35,7 +37,9 @@ public class PostingResDto {
                          String date,
                          List<ContentResDto> contentDtoList,
                          int like,
-                         List<CommentResDto> comments) {
+                         List<CommentResDto> comments,
+                         String university
+    ) {
         this.id = id;
         this.type = type;
         this.entertainer = entertainerDto;
@@ -46,6 +50,7 @@ public class PostingResDto {
         this.contents = contentDtoList;
         this.likeCount = like;
         this.comments = comments;
+        this.university = university;
     }
 
     public static PostingResDto from(
@@ -58,9 +63,10 @@ public class PostingResDto {
             String date,
             List<ContentResDto> contentDtoList,
             int like,
-            List<CommentResDto> comments
+            List<CommentResDto> comments,
+            String university
     ) {
-        return new PostingResDto(id,type, boothEntertainerDto, postingTitle, coverPhoto,location, date, contentDtoList, like, comments);
+        return new PostingResDto(id,type, boothEntertainerDto, postingTitle, coverPhoto,location, date, contentDtoList, like, comments, university);
     }
 
 
