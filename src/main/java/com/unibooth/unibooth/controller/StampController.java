@@ -1,7 +1,8 @@
 package com.unibooth.unibooth.controller;
 
 
-import com.unibooth.unibooth.domain.booth.service.StampService;
+import com.unibooth.unibooth.domain.booth.dto.response.StampResDto;
+import com.unibooth.unibooth.stamp.service.StampService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,8 +14,13 @@ public class StampController {
 
     private final StampService stampService;
 
-    @PostMapping("/{boothId}")
-    public boolean stampValidate(@PathVariable Long boothId, @RequestParam String code) {
-        return stampService.codeValidate(boothId, code);
+    @PostMapping("/{boothId}/{userId}")
+    public boolean stampValidate(@PathVariable Long boothId,@PathVariable Long userId, @RequestParam String code) {
+        return stampService.codeValidateAndSave(boothId, userId, code);
+    }
+
+    @GetMapping("/user/{userId}")
+    public StampResDto getStampCountOfUser(@PathVariable Long userId) {
+        return stampService.getStampCountOfUser(userId);
     }
 }

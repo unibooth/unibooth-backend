@@ -54,9 +54,10 @@ public class User implements UserDetails {
 
     private boolean isEntertainer;
 
-    @Getter
+
     @ManyToMany(mappedBy = "likeUsers")
     private Set<Posting> likePostings = new HashSet<>();
+
 
 
     @ElementCollection(fetch = FetchType.EAGER)
