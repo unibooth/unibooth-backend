@@ -15,7 +15,7 @@ public class Booth {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Entertainer entertainer;
 
     private String university;
