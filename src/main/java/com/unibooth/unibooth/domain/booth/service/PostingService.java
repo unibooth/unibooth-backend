@@ -133,7 +133,8 @@ public class PostingService {
                             booth.getDate(),
                             contentResDtos,
                             posting.getLikeUsers().size(),
-                            commentResDtoList
+                            commentResDtoList,
+                            booth.getUniversity()
                     );
 
         return postingResDto;
