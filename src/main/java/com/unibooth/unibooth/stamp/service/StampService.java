@@ -25,7 +25,7 @@ public class StampService {
         String stampCode = booth.getStampCode();
 
         if(stampCode.equals(code)) {
-            Collect collect = Collect.of(booth, user);
+            Collect collect = Collect.of(booth, user, booth.getUniversity());
             collectRepository.save(collect);
             return true;
         }else {
