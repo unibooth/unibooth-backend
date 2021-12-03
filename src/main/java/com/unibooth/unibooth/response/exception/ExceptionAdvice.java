@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.nio.charset.Charset;
+import java.sql.SQLIntegrityConstraintViolationException;
 
 @ControllerAdvice
 public class ExceptionAdvice {
@@ -18,6 +19,13 @@ public class ExceptionAdvice {
     public ResponseEntity<HttpResponseDto> handler(NullPointerException e) {
         HttpResponseDto httpResponseDto =
                 new HttpResponseDto(StatusEnum.PARAMETER_LACKED, e.getMessage());
+        return new ResponseEntity<>(httpResponseDto, getHttpHeaders(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(SQLIntegrityConstraintViolationException.class)
+    public ResponseEntity<HttpResponseDto> handler(SQLIntegrityConstraintViolationException e) {
+        HttpResponseDto httpResponseDto =
+                new HttpResponseDto(StatusEnum.BAD_REQUEST, e.getMessage());
         return new ResponseEntity<>(httpResponseDto, getHttpHeaders(), HttpStatus.BAD_REQUEST);
     }
 
