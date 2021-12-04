@@ -18,7 +18,7 @@ public class PostingResDto {
     private String name;
     private byte[] image;
 
-    private String location;
+    private int location;
     private String date;
     private List<ContentResDto> contents;
     private List<CommentResDto> comments;
@@ -33,7 +33,7 @@ public class PostingResDto {
                          EntertainerDto entertainerDto,
                          String postingTitle,
                          byte[] coverPhoto,
-                         String location,
+                         int location,
                          String date,
                          List<ContentResDto> contentDtoList,
                          int like,
@@ -59,7 +59,7 @@ public class PostingResDto {
             EntertainerDto boothEntertainerDto,
             String postingTitle,
             byte[] coverPhoto,
-            String location,
+            int location,
             String date,
             List<ContentResDto> contentDtoList,
             int like,
