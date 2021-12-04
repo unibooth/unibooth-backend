@@ -14,6 +14,6 @@ public class BoothCreateDto {
     private double latitude;
     private double longitude;
     private String university;
-    private String location;
+    private int location;
     private String date;
 }
