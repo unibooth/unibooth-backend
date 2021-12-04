@@ -19,14 +19,14 @@ public class Booth {
     private Entertainer entertainer;
 
     private String university;
-    private String location;
+    private int location;
     private String type;
     private String date;
     private String stampCode;
     private double latitude;
     private double longitude;
 
-    public Booth(Entertainer entertainer, String university, String location, String type, String date, double latitude, double longitude) {
+    public Booth(Entertainer entertainer, String university, int location, String type, String date, double latitude, double longitude) {
         this.entertainer = entertainer;
         this.university = university;
         this.location = location;
@@ -40,7 +40,7 @@ public class Booth {
     public static Booth of(
             Entertainer entertainer,
             String university,
-            String location,
+            int location,
             String type,
             String date,
             double latitude,
