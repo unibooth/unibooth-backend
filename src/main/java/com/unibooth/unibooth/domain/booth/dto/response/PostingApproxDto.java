@@ -23,6 +23,7 @@ public class PostingApproxDto {
     private int shareCount;
     private double latitude;
     private double longitude;
+    private int location;
 
 
     // 댓글만 있으면 끝
@@ -34,7 +35,8 @@ public class PostingApproxDto {
                             List<CommentResDto> comments,
                             double latitude,
                             double longitude,
-                            EntertainerDto entertainer
+                            EntertainerDto entertainer,
+                            int location
     ) {
         this.id = id;
         this.name = postingTitle;
@@ -45,6 +47,7 @@ public class PostingApproxDto {
         this.latitude = latitude;
         this.longitude = longitude;
         this.entertainer = entertainer;
+        this.location = location;
     }
 
     public static PostingApproxDto from(
@@ -56,9 +59,10 @@ public class PostingApproxDto {
             List<CommentResDto> comments,
             double latitude,
             double longitude,
-            EntertainerDto entertainer
+            EntertainerDto entertainer,
+            int location
 
     ) {
-        return new PostingApproxDto(id, postingTitle, coverPhoto, like, type, comments, latitude, longitude, entertainer);
+        return new PostingApproxDto(id, postingTitle, coverPhoto, like, type, comments, latitude, longitude, entertainer, location);
     }
 }
