@@ -25,10 +25,11 @@ public class Comment {
     private User user;
     private Date createdAt;
 
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private FileStream fileStream;
 
-
-    public Comment(String content, User user, Posting posting) {
-
+    public Comment(String content, User user, Posting posting, FileStream fileStream) {
+        this.fileStream = fileStream;
         this.content = content;
         this.user = user;
         this.posting = posting;
@@ -36,6 +37,6 @@ public class Comment {
     }
 
     public static  Comment of(String content, User user, Posting posting, FileStream image) {
-        return new Comment(content, user, posting);
+        return new Comment(content, user, posting, image);
     }
 }

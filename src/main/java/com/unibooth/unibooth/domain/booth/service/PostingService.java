@@ -88,14 +88,24 @@ public class PostingService {
             Entertainer entertainer = posting.getEntertainer();
             List<Comment> commentList = commentRepository.findByPostingId(postId);
 
-            List<CommentResDto> commentResDtoList = commentList
-                    .stream().map(comment -> CommentResDto.from(
-                            comment.getId(),
-                            comment.getCreatedAt(),
-                            comment.getContent(),
-                            comment.getUser()
-                    )).collect(Collectors.toList());
+            List<CommentResDto> commentResDtoList = new ArrayList<>();
+            for(int i=0; i<commentList.size(); i++) {
+                Comment comment = commentList.get(i);
+                File file = new File(comment.getFileStream().getFilePath() + comment.getFileStream().getFileName());
+                Path path = Paths.get(file.getAbsolutePath());
+                ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(path));
 
+                CommentResDto commentResDto = CommentResDto.from(
+                        comment.getId(),
+                        comment.getCreatedAt(),
+                        comment.getContent(),
+                        comment.getUser(),
+                        resource.getByteArray()
+                );
+
+                commentResDtoList.add(commentResDto);
+            }
+//
             List<ContentResDto> contentResDtos = new ArrayList<>();
             for(int j=0; j<posting.getContentsList().size(); j++) {
                 Content contents = posting.getContentsList().get(j);
@@ -150,12 +160,22 @@ public class PostingService {
                         posting -> {
                             List<CommentResDto> comments = commentRepository.findByPostingId(posting.getId())
                                     .stream().map(
-                                            comment -> CommentResDto.from(
+                                            comment ->  {
+                                                File file = new File(comment.getFileStream().getFilePath() + comment.getFileStream().getFileName());
+                                                Path path = Paths.get(file.getAbsolutePath());
+                                                ByteArrayResource resource = null;
+                                                try {
+                                                    resource = new ByteArrayResource(Files.readAllBytes(path));
+                                                } catch (IOException e) {
+                                                    e.printStackTrace();
+                                                }
+                                                return CommentResDto.from(
                                                     comment.getId(),
                                                     comment.getCreatedAt(),
                                                     comment.getContent(),
-                                                    comment.getUser()
-                                            )
+                                                    comment.getUser(),
+                                                        resource.getByteArray()
+                                            );}
                                     ).collect(Collectors.toList());
 
                             File file = new File(posting.getCoverPhoto().getFilePath() + posting.getCoverPhoto().getFileName());
