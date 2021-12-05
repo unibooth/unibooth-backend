@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
@@ -42,9 +43,9 @@ public class PostingService {
     private final UserRepository userRepository;
 
     @Transactional(rollbackFor = {Exception.class})
-    public void boothPosting(Long boothId, Long entertainerId, PostingListDto postingListDto) throws IOException, NoSuchAlgorithmException {
+    public void boothPosting(Long boothId, PostingListDto postingListDto) throws IOException, NoSuchAlgorithmException {
         Booth booth = boothRepository.findByIdElseThrow(boothId);
-        Entertainer entertainer = entertainerRepository.findByIdElseThrow(entertainerId);
+        Entertainer entertainer = booth.getEntertainer();
 
         List<Content> contentsList = new ArrayList<>();
         for(int i=0; i<postingListDto.getContentDtoList().size(); i++) {
@@ -80,20 +81,31 @@ public class PostingService {
         postingRepository.save(posting);
     }
 
-    public PostingResDto getPostingDetail(Long postId, Long entertainerId) throws IOException {
+    public PostingResDto getPostingDetail(Long postId) throws IOException {
             Posting posting = postingRepository.findByIdElseThrow(postId);
-            Booth booth = boothRepository.findByIdElseThrow(postId);
-            Entertainer entertainer = entertainerRepository.findByIdElseThrow(entertainerId);
+            Booth booth = posting.getBooth();
+        System.out.println("booth.getLocation() = " + booth.getLocation());
+            Entertainer entertainer = posting.getEntertainer();
             List<Comment> commentList = commentRepository.findByPostingId(postId);
 
-            List<CommentResDto> commentResDtoList = commentList
-                    .stream().map(comment -> CommentResDto.from(
-                            comment.getId(),
-                            comment.getCreatedAt(),
-                            comment.getContent(),
-                            comment.getUser()
-                    )).collect(Collectors.toList());
+            List<CommentResDto> commentResDtoList = new ArrayList<>();
+            for(int i=0; i<commentList.size(); i++) {
+                Comment comment = commentList.get(i);
+                File file = new File(comment.getFileStream().getFilePath() + comment.getFileStream().getFileName());
+                Path path = Paths.get(file.getAbsolutePath());
+                ByteArrayResource resource = new ByteArrayResource(Files.readAllBytes(path));
 
+                CommentResDto commentResDto = CommentResDto.from(
+                        comment.getId(),
+                        comment.getCreatedAt(),
+                        comment.getContent(),
+                        comment.getUser(),
+                        resource.getByteArray()
+                );
+
+                commentResDtoList.add(commentResDto);
+            }
+//
             List<ContentResDto> contentResDtos = new ArrayList<>();
             for(int j=0; j<posting.getContentsList().size(); j++) {
                 Content contents = posting.getContentsList().get(j);
@@ -148,12 +160,22 @@ public class PostingService {
                         posting -> {
                             List<CommentResDto> comments = commentRepository.findByPostingId(posting.getId())
                                     .stream().map(
-                                            comment -> CommentResDto.from(
+                                            comment ->  {
+                                                File file = new File(comment.getFileStream().getFilePath() + comment.getFileStream().getFileName());
+                                                Path path = Paths.get(file.getAbsolutePath());
+                                                ByteArrayResource resource = null;
+                                                try {
+                                                    resource = new ByteArrayResource(Files.readAllBytes(path));
+                                                } catch (IOException e) {
+                                                    e.printStackTrace();
+                                                }
+                                                return CommentResDto.from(
                                                     comment.getId(),
                                                     comment.getCreatedAt(),
                                                     comment.getContent(),
-                                                    comment.getUser()
-                                            )
+                                                    comment.getUser(),
+                                                        resource.getByteArray()
+                                            );}
                                     ).collect(Collectors.toList());
 
                             File file = new File(posting.getCoverPhoto().getFilePath() + posting.getCoverPhoto().getFileName());
@@ -178,7 +200,8 @@ public class PostingService {
                                     comments,
                                     posting.getBooth().getLatitude(),
                                     posting.getBooth().getLongitude(),
-                                    entertainerDto
+                                    entertainerDto,
+                                    posting.getBooth().getLocation()
 
                             );
 
@@ -188,10 +211,11 @@ public class PostingService {
         return postingResDtoList;
     }
 
-    public void addComment(Long postId, Long userId, CommentDto commentDto) {
+    public void addComment(Long postId, Long userId, String com, MultipartFile image) throws IOException, NoSuchAlgorithmException {
+        FileStream fileStream = fileService.fileUpload(image);
         Posting posting = postingRepository.findByIdElseThrow(postId);
         User user = userRepository.findByIdElseThrow(userId);
-        Comment comment = Comment.of(commentDto.getContent(), user, posting);
+        Comment comment = Comment.of(com, user, posting, fileStream);
         commentRepository.save(comment);
     }
 

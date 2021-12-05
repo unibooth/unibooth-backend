@@ -10,6 +10,7 @@ import com.unibooth.unibooth.domain.booth.service.PostingService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
@@ -24,31 +25,33 @@ public class PostingController {
     private final PostingService postingService;
     private final LikeService likeService;
 
-    @PostMapping("/{boothId}/{enterId}")
+    @PostMapping("/{boothId}")
     @ResponseStatus(HttpStatus.OK)
     public String boothPosting(@PathVariable Long boothId,
-                               @PathVariable Long enterId,
                                @ModelAttribute PostingListDto postingDto
                                ) throws IOException, NoSuchAlgorithmException {
         System.out.println("postingDto.getPostingTitle() = " + postingDto.getPostingTitle());
-        postingService.boothPosting(boothId, enterId, postingDto);
+        postingService.boothPosting(boothId, postingDto);
         return "success";
     }
 
     @PostMapping("/like/{postingId}/{userId}")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @ResponseStatus(HttpStatus.OK)
     public String likeAppendOrRemove(@PathVariable Long postingId, @PathVariable Long userId) {
         likeService.likeAppendOrDelete(postingId, userId);
         return "success";
     }
 
-    @GetMapping("/detail/{postId}/{enterId}")
+    @GetMapping("/detail/{postId}")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @ResponseStatus(HttpStatus.OK)
-    public PostingResDto getBoothDetail(@PathVariable Long postId, @PathVariable Long enterId) throws IOException {
-        return postingService.getPostingDetail(postId, enterId);
+    public PostingResDto getBoothDetail(@PathVariable Long postId) throws IOException {
+        return postingService.getPostingDetail(postId);
     }
 
     @GetMapping("/univ")
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
     @ResponseStatus(HttpStatus.OK)
     public List<PostingApproxDto> getAllBoothPosting(@RequestParam String university) {
         System.out.println("university = " + university);
@@ -57,8 +60,9 @@ public class PostingController {
 
 
     @PostMapping("/comment/{postId}/{userId}")
-    public String addComment(@PathVariable Long postId, @PathVariable Long userId, @RequestBody CommentDto commentDto) {
-        postingService.addComment(postId, userId, commentDto);
+    @CrossOrigin(origins = "*", allowedHeaders = "*")
+    public String addComment(@PathVariable Long postId, @PathVariable Long userId, @RequestParam MultipartFile image,  @RequestParam String comment) throws IOException, NoSuchAlgorithmException {
+        postingService.addComment(postId, userId, comment, image);
         return "success";
     }
 

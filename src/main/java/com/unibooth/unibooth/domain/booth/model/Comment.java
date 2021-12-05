@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.io.File;
 import java.time.LocalDateTime;
 import java.util.Date;
 
@@ -24,14 +25,18 @@ public class Comment {
     private User user;
     private Date createdAt;
 
-    public Comment(String content, User user, Posting posting) {
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private FileStream fileStream;
+
+    public Comment(String content, User user, Posting posting, FileStream fileStream) {
+        this.fileStream = fileStream;
         this.content = content;
         this.user = user;
         this.posting = posting;
         this.createdAt = new Date(System.currentTimeMillis());
     }
 
-    public static  Comment of(String content, User user, Posting posting) {
-        return new Comment(content, user, posting);
+    public static  Comment of(String content, User user, Posting posting, FileStream image) {
+        return new Comment(content, user, posting, image);
     }
 }
