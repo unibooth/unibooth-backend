@@ -23,4 +23,7 @@
 
 
 
+# Main Home
 
+
+<img width="375" alt="홈" src="https://user-images.githubusercontent.com/33655186/144884193-d661383e-3d0a-43d6-bb5f-fb93dc406e0e.png">
